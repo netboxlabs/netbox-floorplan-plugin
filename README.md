@@ -34,6 +34,11 @@ Enable the plugin in /opt/netbox/netbox/netbox/configuration.py:
 ```
 PLUGINS = ['netbox_floorplan']
 ```
+Update the database:
+```
+python manage.py migrate netbox_floorplan
+```
+
 Restart NetBox and add `netbox-floorplan-plugin` to your local_requirements.txt
 
 See [NetBox Documentation](https://docs.netbox.dev/en/stable/plugins/#installing-plugins) for details
