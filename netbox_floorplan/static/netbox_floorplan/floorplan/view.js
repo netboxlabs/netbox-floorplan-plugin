@@ -7,7 +7,7 @@ import {
     start_pan,
     reset_zoom,
     init_floor_plan
-} from "/static/netbox_floorplan/floorplan/utils.js";
+} from "./utils.js";
 
 var canvas = new fabric.Canvas('canvas');
 

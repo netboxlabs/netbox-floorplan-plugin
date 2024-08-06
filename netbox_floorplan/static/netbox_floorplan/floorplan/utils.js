@@ -9,8 +9,14 @@ export {
     stop_pan,
     start_pan,
     move_pan,
-    init_floor_plan
+    init_floor_plan,
+    netbox_root
 };
+
+// Specify the base path where netbox is hosted here
+// If the base path is '/', just leave it empty
+// Otherwise, it must always start with '/' and should never end with '/' (e.g. '/netbox', '/apps/netbox')
+const netbox_root = ""
 
 function resize_canvas(canvas, window) {
     var bob_width = $("#content-container").width();
@@ -138,7 +144,7 @@ function init_floor_plan(floorplan_id, canvas, mode) {
         return;
     }
 
-    const floorplan_call = $.get(`/api/plugins/floorplan/floorplans/?id=${floorplan_id}`);
+    const floorplan_call = $.get(`${netbox_root}/api/plugins/floorplan/floorplans/?id=${floorplan_id}`);
     floorplan_call.done(function (floorplan) {
         floorplan.results.forEach((floorplan) => {
             canvas.loadFromJSON(JSON.stringify(floorplan.canvas), canvas.renderAll.bind(canvas), function (o, object) {

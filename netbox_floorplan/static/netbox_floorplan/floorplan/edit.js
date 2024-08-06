@@ -12,8 +12,9 @@ import {
     start_pan,
     move_pan,
     reset_zoom,
-    init_floor_plan
-} from "/static/netbox_floorplan/floorplan/utils.js";
+    init_floor_plan,
+    netbox_root
+} from "./utils.js";
 
 var csrf = document.getElementById('csrf').value;
 var obj_pk = document.getElementById('obj_pk').value;
@@ -22,8 +23,8 @@ var record_type = document.getElementById('record_type').value;
 var site_id = document.getElementById('site_id').value;
 var location_id = document.getElementById('location_id').value;
 
-htmx.ajax('GET', `/plugins/floorplan/floorplans/racks/?floorplan_id=${obj_pk}`, { target: '#rack-card', swap: 'innerHTML', trigger: 'load' })
-htmx.ajax('GET', `/plugins/floorplan/floorplans/devices/?floorplan_id=${obj_pk}`, { target: '#unrack-card', swap: 'innerHTML', trigger: 'load' })
+htmx.ajax('GET', `${netbox_root}/plugins/floorplan/floorplans/racks/?floorplan_id=${obj_pk}`, { target: '#rack-card', swap: 'innerHTML', trigger: 'load' })
+htmx.ajax('GET', `${netbox_root}/plugins/floorplan/floorplans/devices/?floorplan_id=${obj_pk}`, { target: '#unrack-card', swap: 'innerHTML', trigger: 'load' })
 
 fabric.Object.prototype.set({
     snapThreshold: 45,
@@ -389,8 +390,8 @@ function delete_floorplan_object() {
     }
     save_floorplan();
     setTimeout(() => {
-        htmx.ajax('GET', `/plugins/floorplan/floorplans/racks/?floorplan_id=${obj_pk}`, { target: '#rack-card', swap: 'innerHTML' });
-        htmx.ajax('GET', `/plugins/floorplan/floorplans/devices/?floorplan_id=${obj_pk}`, { target: '#unrack-card', swap: 'innerHTML' });
+        htmx.ajax('GET', `${netbox_root}/plugins/floorplan/floorplans/racks/?floorplan_id=${obj_pk}`, { target: '#rack-card', swap: 'innerHTML' });
+        htmx.ajax('GET', `${netbox_root}/plugins/floorplan/floorplans/devices/?floorplan_id=${obj_pk}`, { target: '#unrack-card', swap: 'innerHTML' });
     }, 1500);
 };
 window.delete_floorplan_object = delete_floorplan_object;
@@ -464,7 +465,7 @@ function update_dimensions() {
     var floor_json = canvas.toJSON(["id", "text", "_controlsVisibility", "custom_meta", "lockMovementY", "lockMovementX", "evented", "selectable"]);
     $.ajax({
         type: "PATCH",
-        url: `/api/plugins/floorplan/floorplans/${obj_pk}/`,
+        url: `${netbox_root}/api/plugins/floorplan/floorplans/${obj_pk}/`,
         dataType: "json",
         headers: {
             "X-CSRFToken": csrf,
@@ -635,7 +636,7 @@ function save_floorplan() {
     var floor_json = canvas.toJSON(["id", "text", "_controlsVisibility", "custom_meta", "lockMovementY", "lockMovementX", "evented", "selectable"]);
     $.ajax({
         type: "PATCH",
-        url: `/api/plugins/floorplan/floorplans/${obj_pk}/`,
+        url: `${netbox_root}/api/plugins/floorplan/floorplans/${obj_pk}/`,
         dataType: "json",
         headers: {
             "X-CSRFToken": csrf,
@@ -654,7 +655,7 @@ function save_and_redirect() {
     var floor_json = canvas.toJSON(["id", "text", "_controlsVisibility", "custom_meta", "lockMovementY", "lockMovementX", "evented", "selectable"]);
     $.ajax({
         type: "PATCH",
-        url: `/api/plugins/floorplan/floorplans/${obj_pk}/`,
+        url: `${netbox_root}/api/plugins/floorplan/floorplans/${obj_pk}/`,
         dataType: "json",
         headers: {
             "X-CSRFToken": csrf,
@@ -668,9 +669,9 @@ function save_and_redirect() {
         }
     }).done(function () {
         if (record_type == "site") {
-            window.location.href = `/dcim/sites/${site_id}/floorplans/`;
+            window.location.href = `${netbox_root}/dcim/sites/${site_id}/floorplans/`;
         } else {
-            window.location.href = `/dcim/locations/${location_id}/floorplans/`;
+            window.location.href = `${netbox_root}/dcim/locations/${location_id}/floorplans/`;
         }
     });
 }
