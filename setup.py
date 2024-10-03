@@ -38,5 +38,5 @@ setup(
     include_package_data=True,
     zip_safe=False,
     min_version="4.0.2",
-    max_version="4.0.10"
+    max_version="4.1.3"
 )
