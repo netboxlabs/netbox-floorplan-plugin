@@ -1,4 +1,4 @@
-name: Release
+name: Release validation
 on:
   pull_request:
     branches: release
